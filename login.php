@@ -28,12 +28,12 @@ if (isset($_SESSION['user'])) {
             <form name="form1" onsubmit="sendForm(); return false;">
                 <div class="form-group">
                     <label for="exampleInputEmail1">帳號</label>
-                    <input type="text" class="form-control" name="account" id="account" placeholder="輸入帳號">
+                    <input type="text" class="form-control" name="_email" id="_email" placeholder="輸入帳號">
                     <small class="form-text">帳號不可為空</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">密碼</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="輸入密碼">
+                    <input type="password" class="form-control" name="_password" id="_password" placeholder="輸入密碼">
                     <small class="form-text">密碼不可為空</small>
                 </div>
                 <button type="submit" class="btn btn-primary">登入</button>
@@ -47,14 +47,14 @@ if (isset($_SESSION['user'])) {
 <script>
     function sendForm() {
         let isPass = true;
-        document.querySelector("#account").nextElementSibling.style.display = 'none';
-        document.querySelector("#password").nextElementSibling.style.display = 'none';
-        if (!document.querySelector("#account").value) {
-            document.querySelector("#account").nextElementSibling.style.display = 'block';
+        document.querySelector("#_email").nextElementSibling.style.display = 'none';
+        document.querySelector("#_password").nextElementSibling.style.display = 'none';
+        if (!document.querySelector("#_email").value) {
+            document.querySelector("#_email").nextElementSibling.style.display = 'block';
             isPass = false;
         }
-        if (!document.querySelector("#password").value) {
-            document.querySelector("#password").nextElementSibling.style.display = 'block';
+        if (!document.querySelector("#_password").value) {
+            document.querySelector("#_password").nextElementSibling.style.display = 'block';
             isPass = false;
         }
 
@@ -69,7 +69,12 @@ if (isset($_SESSION['user'])) {
                 .then(obj => {
                     console.log('result:', obj);
                     if (obj.login_success) {
-                        location.href = 'index_.php';
+                        if(obj.hasCart){
+                            location.href = 'cart.php';
+                        }else{
+                            location.href = 'index_.php';
+                        }
+                        
                     } else {
                         alert(obj.error);
                     }

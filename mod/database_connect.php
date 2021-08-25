@@ -1,7 +1,7 @@
 <?php
 
 $db_host = 'localhost';
-$db_name = 'wandering';
+$db_name = 'wander';
 $db_user = 'admin';
 $db_pass= 'admin';
 

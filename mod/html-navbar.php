@@ -9,16 +9,19 @@
         <a class="nav-link" href="index_.php">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="product.php">Product</a>
+        <a class="nav-link" href="product-list.php">Product</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Cart</a>
+        <a class="nav-link" href="cart.php">Cart</a>
       </li>
     </ul>
     <ul class="navbar-nav">
       <?php if(isset($_SESSION['user'])) : //確認session暫存是否存在 ?>
       <li class="nav-item">
-        <a class="nav-link active" href=""><?= $_SESSION['user']['nickname'].',你好' ?></a>
+        <a class="nav-link active" href=""><?= $_SESSION['user']['_nickname'].',你好' ?></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="myorder.php">MyOrder</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="logout.php">Logout</a>

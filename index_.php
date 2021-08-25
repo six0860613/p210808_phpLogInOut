@@ -1,8 +1,8 @@
-<?php include __DIR__.'/mod/initialization.php' ?>
+<?php include __DIR__.'/mod/initialization.php'; ?>
 <?php $title = "首頁"; ?>
 
-<?php include __DIR__.'/mod/html-header.php' ?>
-<?php include __DIR__.'/mod/html-navbar.php' ?>
+<?php include __DIR__.'/mod/html-header.php'; ?>
+<?php include __DIR__.'/mod/html-navbar.php'; ?>
 
 <div class="container">
     <div class="row">
@@ -12,5 +12,5 @@
     </div>
 </div>
 
-<?php include __DIR__.'/mod/html-script.php' ?>
-<?php include __DIR__.'/mod/html-foot.php' ?>
+<?php include __DIR__.'/mod/html-script.php'; ?>
+<?php include __DIR__.'/mod/html-foot.php'; ?>

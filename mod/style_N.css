@@ -1,0 +1,113 @@
+/* cart */
+.deleteBTN,
+.modal-del-btn {
+    background-color: red;
+    color: white;
+}
+
+table tbody .fa-trash-alt {
+    color: white;
+}
+
+.course_img {
+    width: 200px;
+}
+
+.qty {
+    display: inline-block;
+    width: auto;
+}
+
+.course_price {
+    color: cornflowerblue;
+}
+
+.total {
+    padding: 15px;
+    background-color: lightseagreen;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: right;
+    border-radius: 10px;
+}
+
+.noneLogin {
+    padding: 15px;
+    margin-right: 20px;
+    background-color: wheat;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: right;
+}
+
+.sendOrderBtn {
+    padding: 15px;
+    background-color: darkgreen;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.modal-send-btn {
+    background-color: darkgreen;
+    color: white;
+}
+
+.sendOrderBtn:hover,
+.modal-send-btn:hover {
+    color: white;
+    opacity: 0.8;
+    transition: 0.5s ease;
+}
+
+
+/* cart */
+.card-title {
+    height: 75px;
+}
+
+.addSuccess {
+    display: none;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 150px;
+    z-index: 10;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.addSuccess-bg {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+
+/* myorder */
+.course_img {
+    max-width: 300px;
+}
+
+.backOrderBtn {
+    padding: 15px;
+    background-color: royalblue;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.backOrderBtn:hover {
+    color: white;
+    opacity: 0.8;
+    transition: 0.5s ease;
+}

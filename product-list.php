@@ -1,4 +1,4 @@
-<?php include __DIR__. '/mod/initialization.php' ?>
+<?php include __DIR__ . '/mod/initialization.php' ?>
 <?php $title = "商品"; ?>
 
 <?php
@@ -19,7 +19,7 @@ $perPage = 3;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 //總共幾筆
-$totalRows = $pdo->query("SELECT count(1) FROM product $where")->fetch(PDO::FETCH_NUM)[0];
+$totalRows = $pdo->query("SELECT count(1) FROM `course` $where")->fetch(PDO::FETCH_NUM)[0];
 
 //總共幾頁
 $totalPages = ceil($totalRows / $perPage); //ceil函數 無條件進位
@@ -33,7 +33,11 @@ if ($totalRows != 0) {
 }
 
 $sql = sprintf(
-    "SELECT * FROM product %s ORDER BY sid ASC LIMIT %s, %s",
+    "SELECT `course`.*, `member`.`_name`
+    FROM `course` 
+    LEFT JOIN `member` 
+    ON `course`.`teacher_sid` = `member`.`sid`
+    %s ORDER BY `course`.`sid` ASC LIMIT %s, %s",
     $where,
     ($page - 1) * $perPage,
     $perPage
@@ -48,27 +52,10 @@ $rows = $pdo->query($sql)
 <?php include __DIR__ . '/mod/html-header.php' ?>
 <?php include __DIR__ . '/mod/html-navbar.php' ?>
 
-<style>
-    table tbody .fa-trash-alt {
-        color: red;
-    }
-
-    .ajaxDelete {
-        color: orangered !important;
-        cursor: pointer;
-    }
-
-    .card-title {
-        height: 50px;
-    }
-
-    .qty {
-        display: inline-block;
-        width: auto;
-    }
-</style>
-
 <div class="container">
+    <!-- 加入成功彈出提示 -->
+    <div class="addSuccess"></div>
+
     <!-- 查詢課程 -->
     <div class="row">
         <div class="col my-2">
@@ -121,7 +108,7 @@ $rows = $pdo->query($sql)
                     <img src="imgs/<?= $r['sid'] ?>.png" alt="">
                     <div class="card-body">
                         <h6 class="card-title"><?= $r['course_name'] ?></h6>
-                        <p class="card-text"><i class="fas fa-chalkboard-teacher"></i> <?= $r['teacher_name'] ?></p>
+                        <p class="card-text"><i class="fas fa-chalkboard-teacher"></i> <?= $r['_name'] ?></p>
                         <p class="card-text"><i class="fas fa-dollar-sign"></i> <?= $r['course_price'] ?></p>
                         <form>
                             <div class="form-group">
@@ -130,7 +117,9 @@ $rows = $pdo->query($sql)
                                         <option value="<?= $i ?>"><?= $i ?></option>
                                     <?php } ?>
                                 </select>
-                                <button type="button" class="btn btn-primary addToCart-btn"><i class="fas fa-cart-plus"></i></button>
+                                <button type="button" class="btn btn-primary addToCart-btn">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -138,77 +127,29 @@ $rows = $pdo->query($sql)
             </div>
         <?php endforeach; ?>
     </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary modal-del-btn">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <?php include __DIR__ . '/mod/html-script.php' ?>
 <script>
-    const btn = $('.addToCart-btn');
+    const aTCBtn = $('.addToCart-btn');
 
-    btn.click(function(){
+    aTCBtn.click(function() {
         const sid = $(this).closest('.product-unit').attr('data-sid');
-        //用$(this)選取的jquery物件才可以用find跟val方法
         const qty = $(this).closest('.product-unit').find('.qty').val();
 
-        console.log("sid:"+sid,"qty:"+qty);
+        console.log("sid:" + sid, "qty:" + qty);
 
-        if (confirm(`確定要增加${qty}個編號${sid}至購物車嗎？`)) {
-                fetch('addToCart.php?sid=' + sid + '&qty=' + qty) 
-                //?sid= 的形式就是GET 因此不需設定method
-                    .then(r => r.json())
-                    .then(obj => {
-                        if (obj.success) {
-                            alert('已成功加入');
-                        } else {
-                            alert('未成功加入');
-                        }
-                    });
-            }
+        fetch('addToCart.php?sid=' + sid + '&qty=' + qty)
+            .then(r => r.json())
+            .then(obj => {
+                if (obj.success) {
+                    //加入成功彈出提示
+                    $('.addSuccess').html(`已成功將${qty}個商品加入購物車`);
+                    $('.addSuccess').addClass('addSuccess-bg').fadeIn().show().delay(500).fadeOut();
+                } else {
+                    alert('失敗');
+                }
+            });
     });
-
-
-
-
-
-
-    const modal = $('#exampleModal');
-
-    // modal script
-    let willDeleteID = 0;
-    $('.deleteBTN').on('click', function(event) {
-        willDeleteID = event.target.closest('tr').dataset.sid;
-        console.log(willDeleteID);
-        modal.find('.modal-body').html(`確定刪除編號${willDeleteID}嗎?`);
-    });
-
-    modal.find('.modal-del-btn').on('click', function(event) {
-        console.log(`data-delete.php?sid=${willDeleteID}`);
-        location.href = `data-delete.php?sid=${willDeleteID}`;
-    });
-
-    // modal.on('show.bs.modal', function(event){
-    //     console.log(event.target);
-    // });
 </script>
 <?php include __DIR__ . '/mod/html-foot.php' ?>

@@ -1,25 +1,19 @@
 <?php
 include __DIR__. '/mod/initialization.php';
+header('Content-Type: application/json');
 
-if(! isset($_SESSION['cart'])){
-    $_SESSION['cart'] = [];
-}
-
-//傳入sid和qty
 $sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
 $qty = isset($_GET['qty']) ? intval($_GET['qty']) : 0;
-
+$_SESSION['success'] = false;
 
 if(! empty($sid)){
+    //以商品數量判斷是新增修改還是刪除
     if(! empty($qty)){
-        // 新增或修改
         $_SESSION['cart'][$sid] = $qty;
         $_SESSION['success'] = true;
     } else {
-        // 移除
         unset($_SESSION['cart'][$sid]);
     }
 }
-header('Content-Type: application/json');
 
-echo json_encode($_SESSION);
+echo json_encode($_SESSION, JSON_UNESCAPED_UNICODE);
